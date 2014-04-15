@@ -15,10 +15,14 @@
  */
 package de.greenrobot.event;
 
+import android.os.Looper;
+
 final class Subscription {
     final Object subscriber;
     final SubscriberMethod subscriberMethod;
     final int priority;
+	final Looper looper;
+
     /**
      * Becomes false as soon as {@link EventBus#unregister(Object)} is called, which is checked by queued event delivery
      * {@link EventBus#invokeSubscriber(PendingPost)} to prevent race conditions.
@@ -29,6 +33,12 @@ final class Subscription {
         this.subscriber = subscriber;
         this.subscriberMethod = subscriberMethod;
         this.priority = priority;
+		Looper myLooper = Looper.myLooper();
+		if (myLooper == null) {
+			Looper.prepare();
+			myLooper = Looper.myLooper();
+		}
+		this.looper = myLooper;
         active = true;
     }
 

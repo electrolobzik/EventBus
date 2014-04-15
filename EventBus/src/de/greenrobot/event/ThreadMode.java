@@ -53,5 +53,15 @@ public enum ThreadMode {
      * of long running asynchronous handler methods at the same time to limit the number of concurrent threads. EventBus
      * uses a thread pool to efficiently reuse threads from completed asynchronous event handler notifications.
      */
-    Async
+    Async,
+
+	/**
+	 * Event handler methods are called in all existing threads, that made registration for handling events with this
+	 * ThreadMode. If the posting thread is registered with this mode, event handler methods also will be called
+	 * directly in the posting thread. Posting events never wait for event handler methods using this mode. Thread is
+	 * obtained and saved in the moment of object registration. It is not allowed general registering of one object to
+	 * the bus several times in different threads. If you need to subscribe single object to handle events in several
+	 * threads, you should use {@link EventBus#registerForThread} for background threads instead.
+	 */
+	RunningThread
 }
