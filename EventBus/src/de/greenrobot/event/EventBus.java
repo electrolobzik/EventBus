@@ -47,6 +47,7 @@ public class EventBus {
 
     private static volatile EventBus defaultInstance;
 
+    private static final String DEFAULT_METHOD_NAME = "onEvent";
     private static final Map<Class<?>, List<Class<?>>> eventTypesCache = new HashMap<Class<?>, List<Class<?>>>();
 
     private final Map<Class<?>, CopyOnWriteArrayList<Subscription>> subscriptionsByEventType;
@@ -61,7 +62,6 @@ public class EventBus {
         }
     };
 
-    private String defaultMethodName = "onEvent";
 
     private final HandlerPoster mainThreadPoster;
     private final BackgroundPoster backgroundPoster;
@@ -141,7 +141,7 @@ public class EventBus {
      * "onEventMainThread".
      */
     public void register(Object subscriber) {
-        register(subscriber, defaultMethodName, false, 0);
+        register(subscriber, DEFAULT_METHOD_NAME, false, 0);
     }
 
 	/**
@@ -151,7 +151,7 @@ public class EventBus {
      * delivery among subscribers with different {@link ThreadMode}s!
      */
     public void register(Object subscriber, int priority) {
-        register(subscriber, defaultMethodName, false, priority);
+        register(subscriber, DEFAULT_METHOD_NAME, false, priority);
     }
 
    	/**
@@ -221,7 +221,7 @@ public class EventBus {
      * {@link #postSticky(Object)}) to the given subscriber.
      */
     public void registerSticky(Object subscriber) {
-        register(subscriber, defaultMethodName, true, 0);
+        register(subscriber, DEFAULT_METHOD_NAME, true, 0);
     }
 
     /**
@@ -229,7 +229,7 @@ public class EventBus {
      * {@link #postSticky(Object)}) to the given subscriber.
      */
     public void registerSticky(Object subscriber, int priority) {
-        register(subscriber, defaultMethodName, true, priority);
+        register(subscriber, DEFAULT_METHOD_NAME, true, priority);
     }
 
     /**
@@ -253,7 +253,7 @@ public class EventBus {
      */
     @Deprecated
     public void register(Object subscriber, Class<?> eventType, Class<?>... moreEventTypes) {
-        register(subscriber, defaultMethodName, false, eventType, moreEventTypes);
+        register(subscriber, DEFAULT_METHOD_NAME, false, eventType, moreEventTypes);
     }
 
     /**
@@ -269,7 +269,7 @@ public class EventBus {
      */
     @Deprecated
     public void registerSticky(Object subscriber, Class<?> eventType, Class<?>... moreEventTypes) {
-        register(subscriber, defaultMethodName, true, eventType, moreEventTypes);
+        register(subscriber, DEFAULT_METHOD_NAME, true, eventType, moreEventTypes);
     }
 
     /**
